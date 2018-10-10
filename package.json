@@ -22,6 +22,7 @@
     "@vkontakte/icons": "^1.2.0",
     "@vkontakte/vkui": "^2.12.3",
     "@vkontakte/vkui-connect": "^1.0.0",
+    "@vkontakte/vkui-connect-mock": "^1.0.5",
     "core-js": "^2.5.7",
     "gh-pages": "^2.0.1",
     "prop-types": "^15.6.2",

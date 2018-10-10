@@ -1,10 +1,11 @@
 import React from 'react';
-import connect from '@vkontakte/vkui-connect';
+import connect from '@vkontakte/vkui-connect-mock';
 import { View } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import Home from './panels/Home';
 import Persik from './panels/Persik';
+import SearchExample from './panels/HeaderSearch'
 
 class App extends React.Component {
 	constructor(props) {
@@ -27,7 +28,9 @@ class App extends React.Component {
 			}
 		});
 		connect.send('VKWebAppGetUserInfo', {});
-	}
+        //connect.send("VKWebAppGetAuthToken", {"app_id": 6705754, "scope": "groups,wall,"});
+
+    }
 
 	go = (e) => {
 		this.setState({ activePanel: e.currentTarget.dataset.to })
@@ -37,7 +40,8 @@ class App extends React.Component {
 		return (
 			<View activePanel={this.state.activePanel}>
 				<Home id="home" fetchedUser={this.state.fetchedUser} go={this.go} />
-				<Persik id="persik" go={this.go} />
+				<SearchExample id="info" go={this.go} />
+				{/*<HeaderSearch id="search" go={this.go}/>*/}
 			</View>
 		);
 	}
