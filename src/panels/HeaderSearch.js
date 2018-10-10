@@ -2,6 +2,7 @@ import React from 'react';
 import { Panel, HeaderButton, Search, View, Cell,List, Avatar, PanelHeader } from '@vkontakte/vkui';
 import Icon24Search from '@vkontakte/icons/dist/24/search';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
+import Icon24Add from '@vkontakte/icons/dist/24/add';
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import {ANDROID, IOS, platform} from '@vkontakte/vkui';
 
@@ -55,9 +56,46 @@ const users = [
 
 const osname = platform();
 
+class SimpleSearch extends React.Component {
+
+    constructor (props) {
+        super(props);
+        this.state = {
+            search: ''
+        }
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange (search) { this.setState({ search }); }
+
+    get thematics () {
+        const search = this.state.search.toLowerCase();
+        return thematics.filter(({name}) => name.toLowerCase().indexOf(search) > -1);
+    }
+
+    render() {
+        return (
+            <div>
+                <PanelHeader
+                    noShadow
+                    right={<HeaderButton onClick={this.props.goHeaderSearch} key="add"><Icon24Add /></HeaderButton>}
+                >
+                    Выбор тематики
+                </PanelHeader>
+                <Search value={this.state.search} onChange={this.onChange}/>
+                {this.thematics.length > 0 &&
+                <List>
+                    {this.thematics.map(thematic => <Cell key={thematic.id}>{thematic.name}</Cell>)}
+                </List>
+                }
+            </div>
+        );
+    }
+}
+
 class HeaderSearch extends React.Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             showSearch: osname === IOS,
@@ -68,27 +106,21 @@ class HeaderSearch extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    toggleSearch() {
-        this.setState({showSearch: !this.state.showSearch});
-    }
+    toggleSearch () { this.setState({ showSearch: !this.state.showSearch }); }
 
-    onChange(search) {
-        this.setState({search});
-    }
+    onChange (search) { this.setState({ search }); }
 
-    get users() {
+    get users () {
         const search = this.state.search.toLowerCase();
         return users.filter(({name}) => name.toLowerCase().indexOf(search) > -1);
     }
 
-    render() {
+    render () {
         return (
             <div>
                 <PanelHeader
-                    left={<HeaderButton onClick={this.props.goSearch}>{osname === IOS ? <Icon28ChevronBack/> :
-                        <Icon24Back/>}</HeaderButton>}
-                    right={osname === ANDROID &&
-                    <HeaderButton onClick={this.toggleSearch}><Icon24Search/></HeaderButton>}
+                    left={<HeaderButton onClick={this.props.goSearch}>{osname === IOS ? <Icon28ChevronBack /> : <Icon24Back />}</HeaderButton>}
+                    right={osname === ANDROID && <HeaderButton onClick={this.toggleSearch}><Icon24Search /></HeaderButton>}
                 >
                     {this.state.showSearch ?
                         <Search
@@ -102,8 +134,7 @@ class HeaderSearch extends React.Component {
                 <List>
                     {this.users.map((user) => (
                         <Cell
-                            before={<Avatar size={40}
-                                            src="https://pp.userapi.com/c841034/v841034569/3b8c1/pt3sOw_qhfg.jpg"/>}
+                            before={<Avatar size={40} src="https://pp.userapi.com/c841034/v841034569/3b8c1/pt3sOw_qhfg.jpg" />}
                             key={user.id}
                             onClick={this.props.goSearch}
                         >{user.name}</Cell>
@@ -116,7 +147,7 @@ class HeaderSearch extends React.Component {
 
 class SearchExample extends React.Component {
 
-    constructor(props) {
+    constructor (props) {
         super(props);
 
         this.state = {
@@ -127,17 +158,15 @@ class SearchExample extends React.Component {
         this.goHeaderSearch = this.goHeaderSearch.bind(this);
     }
 
-    goHeaderSearch() {
-        this.setState({activePanel: 'header-search'});
-    }
+    goHeaderSearch () { this.setState({ activePanel: 'header-search' }); }
+    goSearch () { this.setState({ activePanel: 'search' }); }
 
-    goSearch() {
-        this.setState({activePanel: 'search'});
-    }
-
-    render() {
+    render () {
         return (
             <View activePanel={this.state.activePanel}>
+                <Panel id="search">
+                    <SimpleSearch goHeaderSearch={this.goHeaderSearch}/>
+                </Panel>
                 <Panel id="header-search">
                     <HeaderSearch goSearch={this.goSearch}/>
                 </Panel>
@@ -146,6 +175,6 @@ class SearchExample extends React.Component {
     }
 }
 
-<SearchExample/>
+<SearchExample />
 
 export default SearchExample

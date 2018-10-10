@@ -4,6 +4,7 @@ import {HeaderButton, IOS, Panel, PanelHeader, platform} from '@vkontakte/vkui';
 import './Persik.css';
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
+import SearchExample from "./HeaderSearch";
 
 const osname = platform();
 
@@ -16,6 +17,8 @@ const Persik = props => (
 		>
 			Информация
 		</PanelHeader>
+
+		<SearchExample/>
 
 	</Panel>
 );
